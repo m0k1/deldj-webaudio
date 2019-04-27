@@ -1,6 +1,6 @@
 $(document).ready(function() {
   var bankCounter = 1;
-
+  
   // Attach it to the window so it can be inspected at the console.
   window.gamepad = new Gamepad();
 
@@ -190,13 +190,13 @@ $(document).ready(function() {
     evt = evt || window.event;
     if(evt.repeat === false) console.log("KeyPress: ", evt.keyCode, evt.code);
     if(evt.repeat === true) return;
-    run_func('down',evt.code);
+    run_func('down',evt.code,true);
     console.log('down ' + evt.code);
   };
 
   document.onkeyup = function(evt) {
     evt = evt || window.event;
-    run_func('up',evt.code);
+    run_func('up',evt.code,true);
     console.log('down ' + evt.code);
   }
 
@@ -205,11 +205,15 @@ $(document).ready(function() {
    */ 
 
    //TODO use ' instead of "" at switch
-   function run_func(keyUpDown,keycode)
+   window.run_func=function(keyUpDown,keycode,wssend)
    {
-
+    console.log("run func");
     //SendHereMessage to WebSocket
-
+    if(wssend == 'true')
+    {
+      wscon.send(keyUpDown + '.' + keycode);
+    }
+    
     if(keyUpDown == 'up')
     {
         //If key is UP
@@ -270,7 +274,6 @@ $(document).ready(function() {
     }
     //
    }
-  
   /*
    *  Sticks control
    */
