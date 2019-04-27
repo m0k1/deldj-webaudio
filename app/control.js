@@ -185,38 +185,92 @@ $(document).ready(function() {
     }
   }
 
+  //Keyboard Binding
   document.onkeydown = function(evt) {
     evt = evt || window.event;
     if(evt.repeat === false) console.log("KeyPress: ", evt.keyCode, evt.code);
     if(evt.repeat === true) return;
-
-    // Change bank
-    if (evt.code == 'KeyB') bankPrevious();
-    if (evt.code == 'KeyN') bankNext();
-
-    // Play samples
-    if (evt.code == 'KeyS') samplePlay('FACE_1');
-    if (evt.code == 'KeyD') samplePlay('FACE_2');
-    if (evt.code == 'KeyA') samplePlay('FACE_3');
-    if (evt.code == 'KeyW') samplePlay('FACE_4');
-    if (evt.code == 'ShiftLeft') samplePlay('LEFT_TOP_SHOULDER');
-    if (evt.code == 'Space') samplePlay('RIGHT_TOP_SHOULDER');
+    run_func('down',evt.code);
+    console.log('down ' + evt.code);
   };
 
   document.onkeyup = function(evt) {
     evt = evt || window.event;
-
-    if (evt.code == 'KeyB') var obj = s.select("#PrevBank").attr({ stroke: "#fff", strokeWidth: 0 });
-    if (evt.code == 'KeyN') var obj = s.select("#NextBank").attr({ stroke: "#fff", strokeWidth: 0 });
-
-    if (evt.code == 'KeyS') sampleStop('FACE_1');
-    if (evt.code == 'KeyD') sampleStop('FACE_2');
-    if (evt.code == 'KeyA') sampleStop('FACE_3');
-    if (evt.code == 'KeyW') sampleStop('FACE_4');
-    if (evt.code == 'ShiftLeft') sampleStop('LEFT_TOP_SHOULDER');
-    if (evt.code == 'Space') sampleStop('RIGHT_TOP_SHOULDER');
+    run_func('up',evt.code);
+    console.log('down ' + evt.code);
   }
 
+  /*
+   *  Functions Emmiter 
+   */ 
+
+   //TODO use ' instead of "" at switch
+   function run_func(keyUpDown,keycode)
+   {
+
+    //SendHereMessage to WebSocket
+
+    if(keyUpDown == 'up')
+    {
+        //If key is UP
+      switch (keycode) {
+        case 'KeyB':
+          var obj = s.select('#PrevBank').attr({ stroke: '#fff', strokeWidth: 0 });
+          break;
+        case 'KeyN':
+          var obj = s.select('#NextBank').attr({ stroke: '#fff', strokeWidth: 0 });
+          break;
+        case 'KeyS':
+           sampleStop('FACE_1');
+          break;
+        case 'KeyD':
+          sampleStop('FACE_2');
+          break;
+        case 'KeyA':
+          sampleStop('FACE_3');
+          break;
+        case 'KeyW':
+          sampleStop('FACE_4');
+          break;
+        case 'ShiftLeft':
+          sampleStop('LEFT_TOP_SHOULDER');
+          break;
+        case 'Space':
+          sampleStop('RIGHT_TOP_SHOULDER');
+      }
+    }
+    else if(keyUpDown == 'down')
+    {
+      //If key is DOWN
+      switch (keycode) {
+        case 'KeyB':
+          bankPrevious();
+          break;
+        case 'KeyN':
+          bankNext();
+          break;
+        case 'KeyS':
+           samplePlay('FACE_1');
+          break;
+        case 'KeyD':
+          samplePlay('FACE_2');
+          break;
+        case 'KeyA':
+          samplePlay('FACE_3');
+          break;
+        case 'KeyW':
+          samplePlay('FACE_4');
+          break;
+        case 'ShiftLeft':
+          samplePlay('LEFT_TOP_SHOULDER');
+          break;
+        case 'Space':
+          samplePlay('RIGHT_TOP_SHOULDER');
+      }
+    }
+    //
+   }
+  
   /*
    *  Sticks control
    */
